@@ -1,77 +1,52 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 
-// state (data của instance)
-const todos = ref([
-  { id: 1, text: 'Học Vue 3', done: false },
-  { id: 2, text: 'Làm bài tập', done: true },
-  { id: 3, text: 'Đi chơi', done: false }
-])
-const newTodo = ref('')
-const editingId = ref(null)
+// ref (primitive)
+const price = ref(100)
+const quantity = ref(1)
 
-// thêm todo
-function addTodo() {
-  if (!newTodo.value.trim()) return
+// reactive (object)
+const discount = reactive({
+  percent: 10
+})
 
-  todos.value.push({
-    id: Date.now(),
-    text: newTodo.value,
-    done: false
-  })
+// computed
+const total = computed(() => {
+  return price.value * quantity.value
+})
 
-  newTodo.value = ''
-}
+const finalPrice = computed(() => {
+  return total.value * (1 - discount.percent / 100)
+})
 
-// xoá
-function deleteTodo(id) {
-  todos.value = todos.value.filter(t => t.id !== id)
-}
-
-// toggle done
-function toggleTodo(todo) {
-  todo.done = !todo.done
-}
-
-// bật chế độ edit
-function startEdit(todo) {
-  editingId.value = todo.id
-}
-
-// lưu edit
-function saveEdit(todo, newText) {
-  todo.text = newText
-  editingId.value = null
-}
+// watch
+watch(total, (newVal, oldVal) => {
+  console.log('Total changed:', oldVal, '→', newVal)
+})
 </script>
 
 <template>
   <div>
-    <h1>Todo App</h1>
+    <h2>Shopping Cart</h2>
 
-    <!-- input -->
-    <input v-model="newTodo" placeholder="Nhập công việc..." />
-    <button @click="addTodo">Thêm</button>
+    <div>
+      <label>Price:</label>
+      <input type="number" v-model="price" />
+    </div>
 
-    <!-- list -->
-    <ul>
-      <li v-for="todo in todos" :key="todo.id">
+    <div>
+      <label>Quantity:</label>
+      <input type="number" v-model="quantity" />
+    </div>
 
-        <!-- checkbox -->
-        <input type="checkbox" v-model="todo.done" />
+    <div>
+      <label>Discount (%):</label>
+      <input type="number" v-model="discount.percent" />
+    </div>
 
-        <!-- text -->
-        <span v-if="editingId !== todo.id" :style="{ textDecoration: todo.done ? 'line-through' : 'none' }">
-          {{ todo.text }}
-        </span>
+    <hr />
 
-        <!-- edit input -->
-        <input v-else :value="todo.text" @keyup.enter="saveEdit(todo, $event.target.value)" />
-
-        <!-- actions -->
-        <button @click="startEdit(todo)">Sửa</button>
-        <button @click="deleteTodo(todo.id)">Xoá</button>
-      </li>
-    </ul>
+    <p>Total: {{ total }}</p>
+    <p>Final: {{ finalPrice }}</p>
   </div>
 </template>
