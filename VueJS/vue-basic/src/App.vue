@@ -1,11 +1,10 @@
 <script setup>
 import { ref } from 'vue';
 
-const message = ref('Hello Vue')
-const imageUrl = ref('https://via.placeholder.com/100')
+const name = ref('')
 </script>
 
 <template>
-  <p>{{ message }}</p>
-  <img :src="imageUrl" />
+  <input v-model="name" />
+  <p>Hello {{ name }}</p>
 </template>
