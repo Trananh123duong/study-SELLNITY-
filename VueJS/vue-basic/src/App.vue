@@ -1,52 +1,52 @@
 <script setup>
 import { ref } from 'vue'
 
-const name = ref('')
-const email = ref('')
-const age = ref(0)
-const color = ref('#000000')
-const isAgree = ref(false)
+const count = ref(0)
 
-function submit() {
-  alert('Submitted!')
+// tăng
+function increase() {
+  count.value++
+}
+
+// giảm
+function decrease() {
+  count.value--
+}
+
+// reset
+function reset() {
+  count.value = 0
+}
+
+// chỉ chạy 1 lần
+function special() {
+  alert('Chỉ chạy 1 lần!')
 }
 </script>
 
 <template>
   <div>
-    <h2>Profile Form</h2>
+    <h2>Counter: {{ count }}</h2>
 
-    <!-- v-model -->
-    <input v-model="name" placeholder="Name" />
-    <input v-model="email" placeholder="Email" />
-    <input type="number" v-model="age" />
-    <input type="color" v-model="color" />
+    <!-- tăng -->
+    <button @click="increase">+</button>
 
-    <!-- checkbox -->
-    <label>
-      <input type="checkbox" v-model="isAgree" />
-      Agree terms
-    </label>
+    <!-- giảm -->
+    <button @click="decrease">-</button>
 
-    <!-- interpolation -->
-    <h3 :style="{ color: color }">
-      Xin chào {{ name || '...' }}
-    </h3>
+    <br /><br />
 
-    <p>Email: {{ email }}</p>
-    <p>Age: {{ age }}</p>
+    <!-- nhấn Enter để reset -->
+    <input 
+      placeholder="Nhấn Enter để reset"
+      @keyup.enter="reset"
+    />
 
-    <!-- condition + class -->
-    <p :class="{ warning: !isAgree }">
-      {{ isAgree ? 'Đã đồng ý' : 'Bạn chưa đồng ý!' }}
-    </p>
+    <br /><br />
 
-    <!-- button -->
-    <button 
-      :disabled="!email || !isAgree"
-      @click="submit"
-    >
-      Submit
+    <!-- chỉ chạy 1 lần -->
+    <button @click.once="special">
+      Click 1 lần
     </button>
   </div>
 </template>
