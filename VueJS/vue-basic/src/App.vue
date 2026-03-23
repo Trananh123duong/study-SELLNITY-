@@ -1,52 +1,59 @@
 <script setup>
 import { ref } from 'vue'
 
-const count = ref(0)
+// state
+const isLogin = ref(false)
+const isChecked = ref(false)
+const showModal = ref(false)
 
-// tăng
-function increase() {
-  count.value++
+// actions
+function toggleLogin() {
+  isLogin.value = !isLogin.value
 }
 
-// giảm
-function decrease() {
-  count.value--
-}
-
-// reset
-function reset() {
-  count.value = 0
-}
-
-// chỉ chạy 1 lần
-function special() {
-  alert('Chỉ chạy 1 lần!')
+function toggleModal() {
+  showModal.value = !showModal.value
 }
 </script>
 
 <template>
   <div>
-    <h2>Counter: {{ count }}</h2>
+    <h2>Conditional Practice</h2>
 
-    <!-- tăng -->
-    <button @click="increase">+</button>
-
-    <!-- giảm -->
-    <button @click="decrease">-</button>
-
-    <br /><br />
-
-    <!-- nhấn Enter để reset -->
-    <input 
-      placeholder="Nhấn Enter để reset"
-      @keyup.enter="reset"
-    />
-
-    <br /><br />
-
-    <!-- chỉ chạy 1 lần -->
-    <button @click.once="special">
-      Click 1 lần
+    <!-- Toggle login -->
+    <button @click="toggleLogin">
+      Toggle Login
     </button>
+
+    <!-- Login status -->
+    <p v-if="isLogin">Welcome user</p>
+    <p v-else>Please login</p>
+
+    <hr />
+
+    <!-- Checkbox -->
+    <label>
+      <input type="checkbox" v-model="isChecked" />
+      Accept Terms
+    </label>
+
+    <!-- Show khi checked -->
+    <p v-if="isChecked">Terms accepted</p>
+
+    <hr />
+
+    <!-- Modal toggle -->
+    <button @click="toggleModal">
+      Toggle Modal
+    </button>
+
+    <!-- Modal dùng v-show -->
+    <div 
+      v-show="showModal"
+      style="border: 1px solid black; padding: 10px; margin-top: 10px;"
+    >
+      <p>This is a modal</p>
+      <button @click="toggleModal">Close</button>
+    </div>
   </div>
 </template>
